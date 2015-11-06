@@ -18,7 +18,7 @@
         self.showsHorizontalScrollIndicator = NO;
         self.showsVerticalScrollIndicator = NO;
 
-        self.contentSize = CGSizeMake(listItems.count * ScreenWidth, self.height);
+        self.contentSize = CGSizeMake(listItems.count * (ScreenWidth - 30.0f), self.height);
         self.contentOffset = CGPointMake(0.0f, 0.0f);
         
         self.pagingEnabled = YES;
@@ -35,7 +35,7 @@
         
         self.listItems = [listItems mutableCopy];
         
-        self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(15.0f, 0.0f, ScreenWidth - 60.0f, self.height + 30.0f) style:UITableViewStylePlain];
+        self.tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth - 60.0f, self.height + 30.0f) style:UITableViewStylePlain listItem:[listItems objectAtIndex:0]];
         
         //注：这里高度加30是随便加的，高度会在往上滑动的过程中修复
         
@@ -50,6 +50,24 @@
         [self addSubview:_tableView];
         
         [self.visibleTableViewArray addObject:_tableView];
+        
+        CGFloat nextX = self.tableView.right + 15.0f;
+        for(NSInteger i=1;i<5;i++)
+        {
+            TrelloListTableView *t_tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(nextX, 0.0f, ScreenWidth - 60.0f, self.height + 30.0f) style:UITableViewStylePlain listItem:[listItems objectAtIndex:i]];
+            t_tableView.tag = 10001 + i;
+            t_tableView.delegate = self;
+            t_tableView.dataSource = self;
+            t_tableView.backgroundColor = Global_trelloGray;
+            t_tableView.layer.cornerRadius = 5.0f;
+            t_tableView.layer.masksToBounds = YES;
+            t_tableView.showsHorizontalScrollIndicator = NO;
+            t_tableView.showsVerticalScrollIndicator = NO;
+            [self addSubview:t_tableView];
+            nextX = t_tableView.right + 15.0f;
+            
+            [self.visibleTableViewArray addObject:t_tableView];
+        }
     }
     return self;
 }
@@ -59,12 +77,12 @@
     switch (tableView.tag) {
         case 10001:
         {
-            return 10;
+            return [(TrelloListTableView *)tableView listItem].rowNumber;
         }
             break;
         default:
         {
-            return 0;
+            return [(TrelloListTableView *)tableView listItem].rowNumber;
         }
             break;
     }
@@ -80,7 +98,7 @@
             break;
         default:
         {
-            return 0;
+            return 1;
         }
             break;
     }
@@ -96,7 +114,7 @@
             break;
         default:
         {
-            return 0;
+            return 60.0f;
         }
             break;
     }
@@ -107,13 +125,12 @@
     switch (tableView.tag) {
         case 10001:
         {
-            TrelloListItem *t_item = [self.listItems objectAtIndex:self.currentIndex];
-            return t_item.title;
+            return [(TrelloListTableView *)tableView listItem].title;
         }
             break;
         default:
         {
-            return 0;
+            return [(TrelloListTableView *)tableView listItem].title;
         }
             break;
     }
@@ -159,7 +176,7 @@
             break;
         default:
         {
-            return 0.0f;
+            return 80.0f;
         }
             break;
     }
@@ -171,7 +188,6 @@
     {
         if(!_isFoldMode)
         {
-            _isFoldMode = YES;
             if(self.HeaderDidFoldedCallBack)
             {
                 self.HeaderDidFoldedCallBack();
@@ -182,7 +198,6 @@
     {
         if(_isFoldMode)
         {
-            _isFoldMode = NO;
             if(self.HeaderDidFoldedCallBack)
             {
                 self.HeaderDidFoldedCallBack();

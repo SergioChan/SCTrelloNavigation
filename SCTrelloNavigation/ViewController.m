@@ -24,11 +24,13 @@
     self.navigationItem.rightBarButtonItem = search;
     // Do any additional setup after loading the view, typically from a nib.
     
-    TrelloListItem *item_1 = [[TrelloListItem alloc]initWithTitle:@"BACKLOG" andLevel:2];
-    TrelloListItem *item_2 = [[TrelloListItem alloc]initWithTitle:@"BRIEFS" andLevel:5];
-    TrelloListItem *item_3 = [[TrelloListItem alloc]initWithTitle:@"DESIGN" andLevel:3];
-    TrelloListItem *item_4 = [[TrelloListItem alloc]initWithTitle:@"USER TESTING" andLevel:2];
-    TrelloListItem *item_5 = [[TrelloListItem alloc]initWithTitle:@"PRODUCT" andLevel:4];
+    NSMutableArray *t_array = [NSMutableArray arrayWithObjects:@"fuck",@"fuck1",@"fuck2",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",@"fuck",nil];
+    TrelloListItem *item_1 = [[TrelloListItem alloc]initWithTitle:@"BACKLOG" level:2 rowNumber:10 rowItems:t_array];
+    TrelloListItem *item_2 = [[TrelloListItem alloc]initWithTitle:@"BRIEFS" level:5 rowNumber:7 rowItems:t_array];
+    TrelloListItem *item_3 = [[TrelloListItem alloc]initWithTitle:@"DESIGN" level:3 rowNumber:5 rowItems:t_array];
+    TrelloListItem *item_4 = [[TrelloListItem alloc]initWithTitle:@"USER TESTING" level:2 rowNumber:3 rowItems:t_array];
+    TrelloListItem *item_5 = [[TrelloListItem alloc]initWithTitle:@"PRODUCT" level:4 rowNumber:12 rowItems:t_array];
+    
     self.trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 64.0f, ScreenWidth, ScreenHeight - 64.0f) listArray:@[item_1,item_2,item_3,item_4,item_5]];
     [self.view addSubview:_trelloView];
 }

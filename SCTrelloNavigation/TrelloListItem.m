@@ -10,13 +10,15 @@
 
 @implementation TrelloListItem
 
-- (id)initWithTitle:(NSString *)title andLevel:(NSInteger)level
+- (id)initWithTitle:(NSString *)title level:(NSInteger)level rowNumber:(NSInteger)rowNumber rowItems:(NSMutableArray *)rowItems
 {
     self = [super init];
     if(self)
     {
         self.title = title;
         self.heightLevel = level;
+        self.rowNumber = rowNumber;
+        self.rowItemsArray = rowItems;
     }
     return self;
 }

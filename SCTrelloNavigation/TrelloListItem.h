@@ -10,8 +10,11 @@
 
 @interface TrelloListItem : NSObject
 
-@property (strong,nonatomic) NSString *title;
+@property (strong, nonatomic) NSString *title;
 @property (nonatomic) NSInteger heightLevel;
 
-- (id)initWithTitle:(NSString *)title andLevel:(NSInteger)level;
+@property (nonatomic) NSInteger rowNumber;
+@property (strong, nonatomic) NSMutableArray *rowItemsArray;
+
+- (id)initWithTitle:(NSString *)title level:(NSInteger)level rowNumber:(NSInteger)rowNumber rowItems:(NSMutableArray *)rowItems;
 @end

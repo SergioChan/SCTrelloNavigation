@@ -22,6 +22,7 @@
         self.selectedIndex = 0;
         self.isBriefMode = YES;
         self.isFoldedMode = NO;
+        self.scrollEnabled = NO;
         self.contentSize = CGSizeMake(70.0f + listItems.count * 30.0f, self.height);
         [self initSubViews];
     }
@@ -51,6 +52,9 @@
             TrelloListItemView *t_boardView = [self.listItemViews objectAtIndex:i];
             if(i == index)
             {
+                [self scrollRectToVisible:t_boardView.frame animated:NO];
+                
+                // 注： tabView 会自动将未显示部分显示出来
                 t_boardView.boardView.alpha = 1.0f;
             }
             else

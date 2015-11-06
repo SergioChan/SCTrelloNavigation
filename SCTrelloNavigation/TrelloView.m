@@ -34,7 +34,7 @@
         
         [self addSubview:_tabView];
         
-        self.listView = [[TrelloListView alloc]initWithFrame:CGRectMake(15.0f, _tabView.bottom - 30.0f, ScreenWidth, self.height - _tabView.bottom + 30.0f) index:0 listArray:listItems];
+        self.listView = [[TrelloListView alloc]initWithFrame:CGRectMake(30.0f, _tabView.bottom - 30.0f, ScreenWidth - 45.0f, self.height - _tabView.bottom + 30.0f) index:0 listArray:listItems];
         _listView.delegate = self;
         _listView.layer.masksToBounds = NO;
         _listView.clipsToBounds = NO;
@@ -63,11 +63,16 @@
                     frame.origin.y = 5.0f;
                     frame.size.height = weakSelf.height - 5.0f;
                     weakSelf.listView.frame = frame;
-                    weakSelf.listView.tableView.height = weakSelf.listView.height;
+                    
+                    for(TrelloListTableView *tableView in weakSelf.listView.visibleTableViewArray)
+                    {
+                        tableView.height = weakSelf.listView.height;
+                    }
                 } completion:^(BOOL finished) {
                     weakSelf.isFoldedMode = YES;
                     weakSelf.tabView.isFoldedMode = YES;
                     weakSelf.tabView.isBriefMode = NO;
+                    weakSelf.listView.isFoldMode = YES;
                 }];
             }
             else
@@ -96,6 +101,7 @@
                     weakSelf.isFoldedMode = NO;
                     weakSelf.tabView.isFoldedMode = NO;
                     weakSelf.tabView.isBriefMode = YES;
+                    weakSelf.listView.isFoldMode = NO;
                 }];
             }
         };
@@ -110,9 +116,9 @@
     {
         [UIView animateWithDuration:0.3f animations:^{
             CGFloat scale = (ScreenWidth/4.5f)/30.0f;
-            CGFloat nextX = 0.0f;
+            CGFloat nextX = 30.0f;
             
-            self.tabView.contentSize = CGSizeMake(self.tabView.listItems.count * (ScreenWidth/4.5f), 100.0f * scale);
+            self.tabView.contentSize = CGSizeMake(self.tabView.listItems.count * (ScreenWidth/4.5f) + 60.0f, 100.0f * scale);
             self.tabView.frame = CGRectMake(0.0f, self.tabView.top, ScreenWidth, 100.0f * scale);
             for(TrelloListItemView *view in self.tabView.listItemViews)
             {
@@ -164,7 +170,7 @@
     if(scrollView == _listView)
     {
         NSInteger x = scrollView.contentOffset.x;
-        NSInteger width = ScreenWidth;
+        NSInteger width = ScreenWidth - 45.0f;
         if(x % width == 0)
         {
             [_tabView selectBoardAtIndex:x/width];
@@ -173,4 +179,5 @@
         //NSLog(@"offset :%f",scrollView.contentOffset.x);
     }
 }
+
 @end

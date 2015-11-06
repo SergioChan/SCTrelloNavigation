@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "GlobalHeader.h"
 #import "TrelloListItem.h"
+#import "TrelloListTableView.h"
 
 @interface TrelloListView : UIScrollView <UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *reusableTableViewArray;
 @property (strong, nonatomic) NSMutableArray *visibleTableViewArray;
 
-@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) TrelloListTableView *tableView;
 
 @property (strong,nonatomic) NSMutableArray *listItems;
 @property (nonatomic) NSInteger currentIndex;
