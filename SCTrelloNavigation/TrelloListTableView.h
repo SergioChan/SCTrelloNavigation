@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "TrelloListItem.h"
+#import "GlobalHeader.h"
 
 @interface TrelloListTableView : UITableView
 
 @property (nonatomic, strong) TrelloListItem *listItem;
+@property (nonatomic, strong) UIView *trelloListHeaderView;
+
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style listItem:(TrelloListItem *)item;
 @end

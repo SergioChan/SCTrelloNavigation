@@ -35,16 +35,19 @@
         
         self.listItems = [listItems mutableCopy];
         
-        self.tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth - 60.0f, self.height + 30.0f) style:UITableViewStylePlain listItem:[listItems objectAtIndex:0]];
+        self.tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth - 60.0f, self.height) style:UITableViewStylePlain listItem:[listItems objectAtIndex:0]];
         
         //注：这里高度加30是随便加的，高度会在往上滑动的过程中修复
+        
+        //注：换成grouped效果也不错 = =
         
         _tableView.tag = 10001;
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = Global_trelloGray;
+        _tableView.backgroundColor = [UIColor clearColor];
         _tableView.layer.cornerRadius = 5.0f;
         _tableView.layer.masksToBounds = YES;
+        
         _tableView.showsHorizontalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator = NO;
         [self addSubview:_tableView];
@@ -54,11 +57,11 @@
         CGFloat nextX = self.tableView.right + 15.0f;
         for(NSInteger i=1;i<5;i++)
         {
-            TrelloListTableView *t_tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(nextX, 0.0f, ScreenWidth - 60.0f, self.height + 30.0f) style:UITableViewStylePlain listItem:[listItems objectAtIndex:i]];
+            TrelloListTableView *t_tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(nextX, 0.0f, ScreenWidth - 60.0f, self.height) style:UITableViewStylePlain listItem:[listItems objectAtIndex:i]];
             t_tableView.tag = 10001 + i;
             t_tableView.delegate = self;
             t_tableView.dataSource = self;
-            t_tableView.backgroundColor = Global_trelloGray;
+            t_tableView.backgroundColor = [UIColor clearColor];
             t_tableView.layer.cornerRadius = 5.0f;
             t_tableView.layer.masksToBounds = YES;
             t_tableView.showsHorizontalScrollIndicator = NO;
@@ -120,20 +123,29 @@
     }
 }
 
-- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    switch (tableView.tag) {
-        case 10001:
-        {
-            return [(TrelloListTableView *)tableView listItem].title;
-        }
-            break;
-        default:
-        {
-            return [(TrelloListTableView *)tableView listItem].title;
-        }
-            break;
+    TrelloListTableView *t_tableView = (TrelloListTableView *)tableView;
+    if(!t_tableView.trelloListHeaderView)
+    {
+        UIView *t_view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, t_tableView.width, 60.0f)];
+        t_view.backgroundColor = Global_trelloGray;
+        
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:t_view.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = t_view.bounds;
+        maskLayer.path = maskPath.CGPath;
+        t_view.layer.mask = maskLayer;
+        
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(30.0f, 20.0f, t_tableView.width - 60.0f, 20.0f)];
+        titleLabel.textColor = [UIColor darkTextColor];
+        titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        titleLabel.text = t_tableView.listItem.title;
+        [t_view addSubview:titleLabel];
+        
+        t_tableView.trelloListHeaderView = t_view;
     }
+    return t_tableView.trelloListHeaderView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -184,7 +196,8 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(scrollView.contentOffset.y >= 80.0f)
+    NSLog(@"size height: %f and offest y :%f",scrollView.contentInset.top,scrollView.contentOffset.y);
+    if(scrollView.contentOffset.y > 0.0f)
     {
         if(!_isFoldMode)
         {
@@ -194,7 +207,7 @@
             }
         }
     }
-    else
+    else if(scrollView.contentOffset.y < 0.0f)
     {
         if(_isFoldMode)
         {

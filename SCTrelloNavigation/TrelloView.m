@@ -61,10 +61,10 @@
                     frame.size.height = weakSelf.height - 5.0f;
                     weakSelf.listView.frame = frame;
                     
-                    for(TrelloListTableView *tableView in weakSelf.listView.visibleTableViewArray)
-                    {
-                        tableView.height = weakSelf.listView.height;
-                    }
+//                    for(TrelloListTableView *tableView in weakSelf.listView.visibleTableViewArray)
+//                    {
+//                        tableView.height = weakSelf.listView.height;
+//                    }
                 } completion:^(BOOL finished) {
                     weakSelf.isFoldedMode = YES;
                     weakSelf.tabView.isFoldedMode = YES;
