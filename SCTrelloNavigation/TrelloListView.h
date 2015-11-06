@@ -10,6 +10,9 @@
 #import "GlobalHeader.h"
 #import "TrelloListItem.h"
 #import "TrelloListTableView.h"
+#import "TrelloListIconView.h"
+#import "TrelloListTableViewCell.h"
+#import "TrelloListCellItem.h"
 
 @interface TrelloListView : UIScrollView <UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 

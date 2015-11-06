@@ -13,11 +13,11 @@
 #import "TrelloListView.h"
 #import "TrelloView.h"
 #import "UIImage+ImageWithColor.h"
+#import "TrelloListCellItem.h"
 
 @interface ViewController : UIViewController <UIScrollViewDelegate>
 
-//@property (nonatomic,strong) TrelloListTabView *tabView;
-//@property (nonatomic,strong) TrelloListView *listView;
 @property (nonatomic,strong) TrelloView *trelloView;
+
 @end
 

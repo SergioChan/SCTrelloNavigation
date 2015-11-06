@@ -16,6 +16,9 @@
 		F068ED7C1BEBACA400C18B86 /* TrelloView.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED7B1BEBACA400C18B86 /* TrelloView.m */; settings = {ASSET_TAGS = (); }; };
 		F068ED7F1BEC503900C18B86 /* TrelloListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED7E1BEC503900C18B86 /* TrelloListTableView.m */; settings = {ASSET_TAGS = (); }; };
 		F068ED821BEC65D800C18B86 /* UIImage+ImageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED811BEC65D800C18B86 /* UIImage+ImageWithColor.m */; settings = {ASSET_TAGS = (); }; };
+		F068ED851BEC948800C18B86 /* TrelloListIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED841BEC948800C18B86 /* TrelloListIconView.m */; settings = {ASSET_TAGS = (); }; };
+		F068ED881BECA1A700C18B86 /* TrelloListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED871BECA1A700C18B86 /* TrelloListTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		F068ED8B1BECA43C00C18B86 /* TrelloListCellItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED8A1BECA43C00C18B86 /* TrelloListCellItem.m */; settings = {ASSET_TAGS = (); }; };
 		F0C932841BEAE8C2006845CF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C932831BEAE8C2006845CF /* main.m */; };
 		F0C932871BEAE8C2006845CF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C932861BEAE8C2006845CF /* AppDelegate.m */; };
 		F0C9328A1BEAE8C2006845CF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C932891BEAE8C2006845CF /* ViewController.m */; };
@@ -63,6 +66,12 @@
 		F068ED7E1BEC503900C18B86 /* TrelloListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrelloListTableView.m; sourceTree = "<group>"; };
 		F068ED801BEC65D800C18B86 /* UIImage+ImageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithColor.h"; sourceTree = "<group>"; };
 		F068ED811BEC65D800C18B86 /* UIImage+ImageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithColor.m"; sourceTree = "<group>"; };
+		F068ED831BEC948800C18B86 /* TrelloListIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrelloListIconView.h; sourceTree = "<group>"; };
+		F068ED841BEC948800C18B86 /* TrelloListIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrelloListIconView.m; sourceTree = "<group>"; };
+		F068ED861BECA1A700C18B86 /* TrelloListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrelloListTableViewCell.h; sourceTree = "<group>"; };
+		F068ED871BECA1A700C18B86 /* TrelloListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrelloListTableViewCell.m; sourceTree = "<group>"; };
+		F068ED891BECA43C00C18B86 /* TrelloListCellItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrelloListCellItem.h; sourceTree = "<group>"; };
+		F068ED8A1BECA43C00C18B86 /* TrelloListCellItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrelloListCellItem.m; sourceTree = "<group>"; };
 		F0C9327F1BEAE8C2006845CF /* SCTrelloNavigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCTrelloNavigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0C932831BEAE8C2006845CF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F0C932851BEAE8C2006845CF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -132,6 +141,10 @@
 				F068ED7B1BEBACA400C18B86 /* TrelloView.m */,
 				F068ED7D1BEC503900C18B86 /* TrelloListTableView.h */,
 				F068ED7E1BEC503900C18B86 /* TrelloListTableView.m */,
+				F068ED831BEC948800C18B86 /* TrelloListIconView.h */,
+				F068ED841BEC948800C18B86 /* TrelloListIconView.m */,
+				F068ED861BECA1A700C18B86 /* TrelloListTableViewCell.h */,
+				F068ED871BECA1A700C18B86 /* TrelloListTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -141,6 +154,8 @@
 			children = (
 				F068ED6D1BEAF88300C18B86 /* TrelloListItem.h */,
 				F068ED6E1BEAF88300C18B86 /* TrelloListItem.m */,
+				F068ED891BECA43C00C18B86 /* TrelloListCellItem.h */,
+				F068ED8A1BECA43C00C18B86 /* TrelloListCellItem.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -351,7 +366,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F068ED721BEAF92800C18B86 /* UIViewExt.m in Sources */,
+				F068ED851BEC948800C18B86 /* TrelloListIconView.m in Sources */,
 				F068ED821BEC65D800C18B86 /* UIImage+ImageWithColor.m in Sources */,
+				F068ED881BECA1A700C18B86 /* TrelloListTableViewCell.m in Sources */,
 				F068ED6F1BEAF88300C18B86 /* TrelloListItem.m in Sources */,
 				F068ED7C1BEBACA400C18B86 /* TrelloView.m in Sources */,
 				F068ED791BEB356100C18B86 /* TrelloListView.m in Sources */,
@@ -360,6 +377,7 @@
 				F0C932871BEAE8C2006845CF /* AppDelegate.m in Sources */,
 				F068ED7F1BEC503900C18B86 /* TrelloListTableView.m in Sources */,
 				F0C932841BEAE8C2006845CF /* main.m in Sources */,
+				F068ED8B1BECA43C00C18B86 /* TrelloListCellItem.m in Sources */,
 				F068ED671BEAF1FD00C18B86 /* UINavigationBar+Awesome.m in Sources */,
 				F068ED751BEAF9D100C18B86 /* TrelloListItemView.m in Sources */,
 			);

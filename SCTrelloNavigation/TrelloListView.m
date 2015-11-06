@@ -47,7 +47,7 @@
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.layer.cornerRadius = 5.0f;
         _tableView.layer.masksToBounds = YES;
-        
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsHorizontalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator = NO;
         [self addSubview:_tableView];
@@ -64,6 +64,7 @@
             t_tableView.backgroundColor = [UIColor clearColor];
             t_tableView.layer.cornerRadius = 5.0f;
             t_tableView.layer.masksToBounds = YES;
+            t_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             t_tableView.showsHorizontalScrollIndicator = NO;
             t_tableView.showsVerticalScrollIndicator = NO;
             [self addSubview:t_tableView];
@@ -137,11 +138,18 @@
         maskLayer.path = maskPath.CGPath;
         t_view.layer.mask = maskLayer;
         
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(30.0f, 20.0f, t_tableView.width - 60.0f, 20.0f)];
-        titleLabel.textColor = [UIColor darkTextColor];
-        titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        TrelloListIconView *menuIcon = [[TrelloListIconView alloc]initWithFrame:CGRectMake(20.0f, 20.0f, 5.0f, 30.0f)];
+        [t_view addSubview:menuIcon];
+        
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, 20.0f, t_tableView.width - 60.0f, 20.0f)];
+        titleLabel.textColor = Global_trelloLightGray;
+        titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
         titleLabel.text = t_tableView.listItem.title;
         [t_view addSubview:titleLabel];
+        
+        UIView *bottomLine = [[UIView alloc]initWithFrame:CGRectMake(0.0f, t_view.height - 1.0f, t_view.width, 1.0f)];
+        bottomLine.backgroundColor = [UIColor lightGrayColor];
+        [t_view addSubview:bottomLine];
         
         t_tableView.trelloListHeaderView = t_view;
     }
@@ -150,53 +158,36 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (tableView.tag) {
-        case 10001:
-        {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell_1"];
-            if(!cell)
-            {
-                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell_1"];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-            cell.textLabel.text = @"fuck";
-            return cell;
-        }
-            break;
-        default:
-        {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell_default"];
-            if(!cell)
-            {
-                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell_default"];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-            cell.textLabel.text = @"fuck";
-            return cell;
-        }
-            break;
+    TrelloListTableView *t_tableView = (TrelloListTableView *)tableView;
+    
+    TrelloListCellItem *t_item = [t_tableView.listItem.rowItemsArray objectAtIndex:indexPath.row];
+    TrelloListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if(!cell)
+    {
+        cell = [[TrelloListTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
+    cell.item = t_item;
+    
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (tableView.tag) {
-        case 10001:
-        {
-            return 80.0f;
-        }
-            break;
-        default:
-        {
-            return 80.0f;
-        }
-            break;
+    TrelloListTableView *t_tableView = (TrelloListTableView *)tableView;
+    
+    TrelloListCellItem *t_item = [t_tableView.listItem.rowItemsArray objectAtIndex:indexPath.row];
+    if(t_item.image)
+    {
+        return 220.0f;
+    }
+    else
+    {
+        return 80.0f;
     }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"size height: %f and offest y :%f",scrollView.contentInset.top,scrollView.contentOffset.y);
     if(scrollView.contentOffset.y > 0.0f)
     {
         if(!_isFoldMode)
