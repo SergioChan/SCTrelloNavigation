@@ -15,6 +15,7 @@
 		F068ED791BEB356100C18B86 /* TrelloListView.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED781BEB356100C18B86 /* TrelloListView.m */; settings = {ASSET_TAGS = (); }; };
 		F068ED7C1BEBACA400C18B86 /* TrelloView.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED7B1BEBACA400C18B86 /* TrelloView.m */; settings = {ASSET_TAGS = (); }; };
 		F068ED7F1BEC503900C18B86 /* TrelloListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED7E1BEC503900C18B86 /* TrelloListTableView.m */; settings = {ASSET_TAGS = (); }; };
+		F068ED821BEC65D800C18B86 /* UIImage+ImageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = F068ED811BEC65D800C18B86 /* UIImage+ImageWithColor.m */; settings = {ASSET_TAGS = (); }; };
 		F0C932841BEAE8C2006845CF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C932831BEAE8C2006845CF /* main.m */; };
 		F0C932871BEAE8C2006845CF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C932861BEAE8C2006845CF /* AppDelegate.m */; };
 		F0C9328A1BEAE8C2006845CF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C932891BEAE8C2006845CF /* ViewController.m */; };
@@ -60,6 +61,8 @@
 		F068ED7B1BEBACA400C18B86 /* TrelloView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrelloView.m; sourceTree = "<group>"; };
 		F068ED7D1BEC503900C18B86 /* TrelloListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrelloListTableView.h; sourceTree = "<group>"; };
 		F068ED7E1BEC503900C18B86 /* TrelloListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrelloListTableView.m; sourceTree = "<group>"; };
+		F068ED801BEC65D800C18B86 /* UIImage+ImageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithColor.h"; sourceTree = "<group>"; };
+		F068ED811BEC65D800C18B86 /* UIImage+ImageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithColor.m"; sourceTree = "<group>"; };
 		F0C9327F1BEAE8C2006845CF /* SCTrelloNavigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCTrelloNavigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0C932831BEAE8C2006845CF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F0C932851BEAE8C2006845CF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 		F068ED641BEAF1F000C18B86 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				F068ED801BEC65D800C18B86 /* UIImage+ImageWithColor.h */,
+				F068ED811BEC65D800C18B86 /* UIImage+ImageWithColor.m */,
 				F068ED701BEAF92800C18B86 /* UIViewExt.h */,
 				F068ED711BEAF92800C18B86 /* UIViewExt.m */,
 				F068ED651BEAF1FD00C18B86 /* UINavigationBar+Awesome.h */,
@@ -346,6 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F068ED721BEAF92800C18B86 /* UIViewExt.m in Sources */,
+				F068ED821BEC65D800C18B86 /* UIImage+ImageWithColor.m in Sources */,
 				F068ED6F1BEAF88300C18B86 /* TrelloListItem.m in Sources */,
 				F068ED7C1BEBACA400C18B86 /* TrelloView.m in Sources */,
 				F068ED791BEB356100C18B86 /* TrelloListView.m in Sources */,
@@ -495,11 +501,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SCTrelloNavigation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cyh.SCTrelloNavigation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -508,11 +516,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SCTrelloNavigation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cyh.SCTrelloNavigation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

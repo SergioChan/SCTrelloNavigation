@@ -26,10 +26,7 @@
         
         __weak TrelloView *weakSelf = self;
         _tabView.HeaderDidSwitchCallBack = ^{
-            if(weakSelf.tabView.isBriefMode)
-            {
-                [weakSelf switchMode];
-            }
+            [weakSelf switchMode];
         };
         
         [self addSubview:_tabView];

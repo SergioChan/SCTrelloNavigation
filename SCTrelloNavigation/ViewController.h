@@ -12,6 +12,7 @@
 #import "TrelloListTabView.h"
 #import "TrelloListView.h"
 #import "TrelloView.h"
+#import "UIImage+ImageWithColor.h"
 
 @interface ViewController : UIViewController <UIScrollViewDelegate>
 

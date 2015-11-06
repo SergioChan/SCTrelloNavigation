@@ -18,7 +18,7 @@
         self.showsHorizontalScrollIndicator = NO;
         self.showsVerticalScrollIndicator = NO;
 
-        self.contentSize = CGSizeMake(listItems.count * (ScreenWidth - 30.0f), self.height);
+        self.contentSize = CGSizeMake(listItems.count * (ScreenWidth - 45.0f), self.height);
         self.contentOffset = CGPointMake(0.0f, 0.0f);
         
         self.pagingEnabled = YES;

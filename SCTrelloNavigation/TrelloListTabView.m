@@ -96,6 +96,16 @@
                         }
                     }
                 }
+                else if(currentPoint.y - prevPoint.y < -2)
+                {
+                    if(!self.isBriefMode)
+                    {
+                        if(self.HeaderDidSwitchCallBack)
+                        {
+                            self.HeaderDidSwitchCallBack();
+                        }
+                    }
+                }
                 else
                 {
                     return;

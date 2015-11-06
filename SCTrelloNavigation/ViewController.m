@@ -31,7 +31,7 @@
     TrelloListItem *item_4 = [[TrelloListItem alloc]initWithTitle:@"USER TESTING" level:2 rowNumber:3 rowItems:t_array];
     TrelloListItem *item_5 = [[TrelloListItem alloc]initWithTitle:@"PRODUCT" level:4 rowNumber:12 rowItems:t_array];
     
-    self.trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 64.0f, ScreenWidth, ScreenHeight - 64.0f) listArray:@[item_1,item_2,item_3,item_4,item_5]];
+    self.trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, ScreenHeight) listArray:@[item_1,item_2,item_3,item_4,item_5]];
     [self.view addSubview:_trelloView];
 }
 
@@ -43,8 +43,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar lt_setBackgroundColor:Global_trelloBlue];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBar.barTintColor = Global_trelloBlue;
+    for (UIView *view in [[[self.navigationController.navigationBar subviews] objectAtIndex:0] subviews]) {
+        if ([view isKindOfClass:[UIImageView class]]) {
+            view.hidden = YES;
+        }
+    }
+    //[self.navigationController.navigationBar lt_setBackgroundColor:Global_trelloBlue];
 }
 
 - (void)didReceiveMemoryWarning {
