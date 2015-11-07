@@ -24,9 +24,20 @@
         self.isFoldedMode = NO;
         self.scrollEnabled = NO;
         self.contentSize = CGSizeMake(70.0f + listItems.count * 30.0f, self.height);
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
+        [self addGestureRecognizer:tap];
         [self initSubViews];
     }
     return self;
+}
+
+- (void)tap
+{
+    if(self.HeaderDidSwitchCallBack)
+    {
+        self.HeaderDidSwitchCallBack();
+    }
 }
 
 - (void)initSubViews
