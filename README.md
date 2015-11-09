@@ -14,7 +14,7 @@ iOS上类似trello的导航动效控件实现。
 
 这种导航的交互模式可以让你在不同的列表中切换，并且列表的切换对你的干扰可以减少到最小程度。
 
-The design was originated from [Aurélien Salomon](https://dribbble.com/aureliensalomon)'s work on Dribbble:[https://dribbble.com/shots/2114816-Trello-Navigation](https://dribbble.com/shots/2114816-Trello-Navigation). This is an open-sourced iOS-native libray similar to this design, not 100% percent equivalent to the original desgin.
+The design was originated from [Aurélien Salomon](https://dribbble.com/aureliensalomon)'s work on Dribbble:[https://dribbble.com/shots/2114816-Trello-Navigation](https://dribbble.com/shots/2114816-Trello-Navigation). This is an open-sourced iOS-native libray similar to this design, not 100%  equivalent to the original desgin.
 
 This navigation interactive mode can make you easier to switch among different boards, while disturbing you the least when you are switching.
  
