@@ -30,4 +30,5 @@
 @property (copy) void (^HeaderDidFoldedCallBack)();
 
 - (id)initWithFrame:(CGRect)frame index:(NSInteger)index listArray:(NSArray *)listItems;
+- (void)reloadData;
 @end

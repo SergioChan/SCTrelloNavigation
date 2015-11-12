@@ -35,38 +35,12 @@
         
         self.listItems = [listItems mutableCopy];
         
-        self.tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth - 60.0f, self.height) style:UITableViewStylePlain listItem:[listItems objectAtIndex:0]];
-        
-        //注：这里高度加30是随便加的，高度会在往上滑动的过程中修复
-        
-        //注：换成grouped效果也不错 = =
-        
-        _tableView.tag = 10001;
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        _tableView.backgroundColor = [UIColor clearColor];
-        _tableView.layer.cornerRadius = 5.0f;
-        _tableView.layer.masksToBounds = YES;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.showsHorizontalScrollIndicator = NO;
-        _tableView.showsVerticalScrollIndicator = NO;
-        [self addSubview:_tableView];
-        
-        [self.visibleTableViewArray addObject:_tableView];
-        
-        CGFloat nextX = self.tableView.right + 15.0f;
-        for(NSInteger i=1;i<5;i++)
+        CGFloat nextX = 0.0f;
+        for(NSInteger i=0;i<listItems.count;i++)
         {
             TrelloListTableView *t_tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(nextX, 0.0f, ScreenWidth - 60.0f, self.height) style:UITableViewStylePlain listItem:[listItems objectAtIndex:i]];
-            t_tableView.tag = 10001 + i;
             t_tableView.delegate = self;
             t_tableView.dataSource = self;
-            t_tableView.backgroundColor = [UIColor clearColor];
-            t_tableView.layer.cornerRadius = 5.0f;
-            t_tableView.layer.masksToBounds = YES;
-            t_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-            t_tableView.showsHorizontalScrollIndicator = NO;
-            t_tableView.showsVerticalScrollIndicator = NO;
             [self addSubview:t_tableView];
             nextX = t_tableView.right + 15.0f;
             
@@ -76,52 +50,83 @@
     return self;
 }
 
+- (void)reloadData
+{
+    // still not implement reusable tableview... fuck...
+    NSInteger currentTableViewNumber = self.visibleTableViewArray.count;
+    if(self.listItems.count == currentTableViewNumber)
+    {
+        for(NSInteger i=0;i<currentTableViewNumber;i++)
+        {
+            TrelloListTableView *t_tableView = (TrelloListTableView *)[self.visibleTableViewArray objectAtIndex:i];
+            t_tableView.listItem = [self.listItems objectAtIndex:i];
+            [t_tableView reloadData];
+        }
+    }
+    else if(self.listItems.count < currentTableViewNumber)
+    {
+        // if having less boards after reloading, remove the rests and reload the useful ones
+        self.contentSize = CGSizeMake(self.listItems.count * (ScreenWidth - 45.0f), self.height);
+        
+        NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+        for(NSInteger i=0;i<currentTableViewNumber;i++)
+        {
+            if(i>=self.listItems.count)
+            {
+                TrelloListTableView *t_tableView = (TrelloListTableView *)[self.visibleTableViewArray objectAtIndex:i];
+                [t_tableView removeFromSuperview];
+                [indexSet addIndex:i];
+            }
+            else
+            {
+                TrelloListTableView *t_tableView = (TrelloListTableView *)[self.visibleTableViewArray objectAtIndex:i];
+                t_tableView.listItem = [self.listItems objectAtIndex:i];
+                [t_tableView reloadData];
+            }
+        }
+        [self.visibleTableViewArray removeObjectsAtIndexes:indexSet];
+    }
+    else
+    {
+        self.contentSize = CGSizeMake(self.listItems.count * (ScreenWidth - 45.0f), self.height);
+        
+        for(NSInteger i=0;i<self.listItems.count;i++)
+        {
+            CGFloat nextX = 0.0f;
+            if(i>=currentTableViewNumber)
+            {
+                TrelloListTableView *t_tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(nextX, 0.0f, ScreenWidth - 60.0f, self.height) style:UITableViewStylePlain listItem:[self.listItems objectAtIndex:i]];
+                t_tableView.delegate = self;
+                t_tableView.dataSource = self;
+                [self addSubview:t_tableView];
+                
+                nextX = t_tableView.right + 15.0f;
+                [self.visibleTableViewArray addObject:t_tableView];
+            }
+            else
+            {
+                TrelloListTableView *t_tableView = (TrelloListTableView *)[self.visibleTableViewArray objectAtIndex:i];
+                t_tableView.listItem = [self.listItems objectAtIndex:i];
+                [t_tableView reloadData];
+                nextX = t_tableView.right + 15.0f;
+            }
+        }
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (tableView.tag) {
-        case 10001:
-        {
-            return [(TrelloListTableView *)tableView listItem].rowNumber;
-        }
-            break;
-        default:
-        {
-            return [(TrelloListTableView *)tableView listItem].rowNumber;
-        }
-            break;
-    }
+    return [(TrelloListTableView *)tableView listItem].rowNumber;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    switch (tableView.tag) {
-        case 10001:
-        {
-            return 1;
-        }
-            break;
-        default:
-        {
-            return 1;
-        }
-            break;
-    }
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    switch (tableView.tag) {
-        case 10001:
-        {
-            return 60.0f;
-        }
-            break;
-        default:
-        {
-            return 60.0f;
-        }
-            break;
-    }
+    return 60.0f;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

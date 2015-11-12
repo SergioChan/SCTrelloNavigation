@@ -16,6 +16,12 @@
     if(self)
     {
         self.listItem = item;
+        self.backgroundColor = [UIColor clearColor];
+        self.layer.cornerRadius = 5.0f;
+        self.layer.masksToBounds = YES;
+        self.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.showsHorizontalScrollIndicator = NO;
+        self.showsVerticalScrollIndicator = NO;
         
         UIView *t_view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.width, 30.0f)];
         t_view.backgroundColor = Global_trelloGray;

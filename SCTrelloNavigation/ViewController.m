@@ -14,12 +14,135 @@
     [super viewDidLoad];
     self.view.backgroundColor = Global_trelloDeepBlue;
 
-    
     UIBarButtonItem *search = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
     search.tintColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = search;
     // Do any additional setup after loading the view, typically from a nib.
     
+    [self importDataArray];
+    
+    // 初始化其实只要一句话的
+    self.trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, ScreenHeight) dataSource:self];
+    [self.view addSubview:_trelloView];
+}
+
+- (void)search:(id)sender
+{
+    // Test for reload data
+//    [self.dataArray removeLastObject];
+//    [self.trelloView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBar.barTintColor = Global_trelloBlue;
+    for (UIView *view in [[[self.navigationController.navigationBar subviews] objectAtIndex:0] subviews]) {
+        if ([view isKindOfClass:[UIImageView class]]) {
+            view.hidden = YES;
+        }
+    }
+    //[self.navigationController.navigationBar lt_setBackgroundColor:Global_trelloBlue];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - TrelloDataSource Method
+- (NSInteger)numberForBoardsInTrelloView:(TrelloView *)trelloView
+{
+    return self.dataArray.count;
+}
+
+- (NSInteger)numberForRowsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+        case 3:
+            return 3;
+            break;
+        case 2:
+        case 4:
+            return 2;
+            break;
+        case 1:
+            return 4;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+- (TrelloListCellItem *)itemForRowsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index atRowIndex:(NSInteger)rowIndex;
+{
+    // If you want to dynamic customize your cell, you can extend the TrelloListCellItem Class to meet more requirements of your own and customize your dataArray
+    return [[self.dataArray objectAtIndex:index] objectAtIndex:rowIndex];
+}
+
+- (NSString *)titleForBoardsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+        {
+            return @"BACKLOG";
+        }
+            break;
+        case 1:
+        {
+            return @"BRIEFS";
+        }
+            break;
+        case 2:
+        {
+            return @"DESIGN";
+        }
+            break;
+        case 3:
+        {
+            return @"USER TESTING";
+        }
+            break;
+        case 4:
+        {
+            return @"PRODUCT";
+        }
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
+
+- (SCTrelloBoardLevel)levelForRowsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            return SCTrelloBoardLevel3;
+            break;
+        case 3:
+            return SCTrelloBoardLevel4;
+            break;
+        case 2:
+            return SCTrelloBoardLevel2;
+            break;
+        case 4:
+            return SCTrelloBoardLevel3;
+            break;
+        case 1:
+            return SCTrelloBoardLevel5;
+            break;
+        default:
+            return SCTrelloBoardLevel1;
+            break;
+    }
+}
+
+- (void)importDataArray
+{
     TrelloListCellItem *cell_item_1_1 = [[TrelloListCellItem alloc] initWithContent:@"Login and Register function" image:nil type:SCTrelloCellItemGreen];
     TrelloListCellItem *cell_item_1_2 = [[TrelloListCellItem alloc] initWithContent:@"Upload and downLoad pictures" image:nil type:SCTrelloCellItemYellow];
     TrelloListCellItem *cell_item_1_3 = [[TrelloListCellItem alloc] initWithContent:@"Have a pleasant afternoon" image:[UIImage imageNamed:@"testImage3"] type:SCTrelloCellItemRed];
@@ -41,38 +164,6 @@
     NSMutableArray *t_array_3 = [NSMutableArray arrayWithObjects:cell_item_3_1,cell_item_3_2, nil];
     NSMutableArray *t_array_4 = [NSMutableArray arrayWithObjects:cell_item_4_1,cell_item_4_2,cell_item_4_3, nil];
     
-    TrelloListItem *item_1 = [[TrelloListItem alloc]initWithTitle:@"BACKLOG" level:3 rowNumber:3 rowItems:t_array_1];
-    TrelloListItem *item_2 = [[TrelloListItem alloc]initWithTitle:@"BRIEFS" level:5 rowNumber:4 rowItems:t_array_2];
-    TrelloListItem *item_3 = [[TrelloListItem alloc]initWithTitle:@"DESIGN" level:2 rowNumber:2 rowItems:t_array_3];
-    TrelloListItem *item_4 = [[TrelloListItem alloc]initWithTitle:@"USER TESTING" level:4 rowNumber:3 rowItems:t_array_4];
-    TrelloListItem *item_5 = [[TrelloListItem alloc]initWithTitle:@"PRODUCT" level:3 rowNumber:2 rowItems:t_array_3];
-    
-    // 初始化其实只要一句话的
-    self.trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, ScreenHeight) listArray:@[item_1,item_2,item_3,item_4,item_5]];
-    [self.view addSubview:_trelloView];
+    self.dataArray = [NSMutableArray arrayWithObjects:t_array_1,t_array_2,t_array_3,t_array_4,t_array_3, nil];
 }
-
-- (void)search:(id)sender
-{
-    //[_trelloView switchMode];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTranslucent:NO];
-    self.navigationController.navigationBar.barTintColor = Global_trelloBlue;
-    for (UIView *view in [[[self.navigationController.navigationBar subviews] objectAtIndex:0] subviews]) {
-        if ([view isKindOfClass:[UIImageView class]]) {
-            view.hidden = YES;
-        }
-    }
-    //[self.navigationController.navigationBar lt_setBackgroundColor:Global_trelloBlue];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 @end

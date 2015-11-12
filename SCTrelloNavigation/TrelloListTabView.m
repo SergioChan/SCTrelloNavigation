@@ -55,6 +55,29 @@
     }
 }
 
+- (void)reloadData
+{
+    self.contentSize = CGSizeMake(70.0f + self.listItems.count * 30.0f, self.height);
+    for(TrelloListItemView *view in self.listItemViews)
+    {
+        [view removeFromSuperview];
+    }
+    [self.listItemViews removeAllObjects];
+    
+    CGFloat nextX = 70.0f;
+    for(TrelloListItem *t_item in self.listItems)
+    {
+        TrelloListItemView *view = [[TrelloListItemView alloc]initWithItem:t_item];
+        CGRect frame = view.frame;
+        frame.origin.x = nextX;
+        view.frame = frame;
+        nextX += view.width;
+        [self addSubview:view];
+        [self.listItemViews addObject:view];
+    }
+    [self selectBoardAtIndex:self.selectedIndex];
+}
+
 - (void)selectBoardAtIndex:(NSInteger)index
 {
     [UIView animateWithDuration:0.2f animations:^{

@@ -13,98 +13,138 @@
 
 @implementation TrelloView
 
-- (id)initWithFrame:(CGRect)frame listArray:(NSArray *)listItems
+#pragma mark - Init method
+- (id)initWithFrame:(CGRect)frame dataSource:(id)dataSource
 {
     self = [super initWithFrame:frame];
     if(self)
     {
-        self.isFoldedMode = NO;
-        
-        self.tabView = [[TrelloListTabView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, 100.0f) withListArray:listItems];
-        _tabView.backgroundColor = Global_trelloBlue;
-        [_tabView selectBoardAtIndex:0];
-        
-        __weak TrelloView *weakSelf = self;
-        _tabView.HeaderDidSwitchCallBack = ^{
-            [weakSelf switchMode];
-        };
-        
-        [self addSubview:_tabView];
-        
-        self.listView = [[TrelloListView alloc]initWithFrame:CGRectMake(30.0f, _tabView.bottom - 30.0f, ScreenWidth - 45.0f, self.height - _tabView.bottom + 30.0f) index:0 listArray:listItems];
-        _listView.delegate = self;
-        _listView.layer.masksToBounds = NO;
-        _listView.clipsToBounds = NO;
-        
-        _listView.HeaderDidFoldedCallBack = ^{
-            if(!weakSelf.isFoldedMode)
-            {
-                // 展开
-                for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
-                {
-                    view.titlelabel.frame = CGRectZero;
-                }
-                [UIView animateWithDuration:0.3f animations:^{
-                    CGFloat nextX = 70.0f;
-                    
-                    weakSelf.tabView.contentSize = CGSizeMake(0.0f, 35.0f);
-                    weakSelf.tabView.frame = CGRectMake(0.0f, weakSelf.tabView.top, ScreenWidth, 35.0f);
-                    for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
-                    {
-                        view.frame = CGRectMake(nextX, 0.0f, 30.0f, 0.0f);
-                        view.boardView.frame = CGRectMake(5.0f, 5.0f, 20.0f, 0.0f);
-                        nextX += view.width;
-                    }
-                    
-                    CGRect frame = weakSelf.listView.frame;
-                    frame.origin.y = 5.0f;
-                    frame.size.height = weakSelf.height - 5.0f;
-                    weakSelf.listView.frame = frame;
-                    
-//                    for(TrelloListTableView *tableView in weakSelf.listView.visibleTableViewArray)
-//                    {
-//                        tableView.height = weakSelf.listView.height;
-//                    }
-                } completion:^(BOOL finished) {
-                    weakSelf.isFoldedMode = YES;
-                    weakSelf.tabView.isFoldedMode = YES;
-                    weakSelf.tabView.isBriefMode = NO;
-                    weakSelf.listView.isFoldMode = YES;
-                }];
-            }
-            else
-            {
-                for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
-                {
-                    view.titlelabel.frame = CGRectZero;
-                }
-                [UIView animateWithDuration:0.3f animations:^{
-                    CGFloat nextX = 70.0f;
-                    
-                    weakSelf.tabView.contentSize = CGSizeMake(70.0f + weakSelf.tabView.listItems.count * 30.0f, 100.0f);
-                    weakSelf.tabView.frame = CGRectMake(0.0f, weakSelf.tabView.top, ScreenWidth, 100.0f);
-                    for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
-                    {
-                        view.frame = CGRectMake(nextX, 0.0f, 30.0f, 30.0f + view.item.heightLevel * 10.0f + 20.0f);
-                        view.boardView.frame = CGRectMake(5.0f, 5.0f, 20.0f, view.item.heightLevel * 10.0f);
-                        nextX += view.width;
-                    }
-                    
-                    CGRect frame = weakSelf.listView.frame;
-                    frame.origin.y = weakSelf.tabView.bottom - 30.0f;
-                    frame.size.height = weakSelf.height - weakSelf.tabView.bottom + 30.0f;
-                    weakSelf.listView.frame = frame;
-                } completion:^(BOOL finished) {
-                    weakSelf.isFoldedMode = NO;
-                    weakSelf.tabView.isFoldedMode = NO;
-                    weakSelf.tabView.isBriefMode = YES;
-                    weakSelf.listView.isFoldMode = NO;
-                }];
-            }
-        };
-        [self addSubview:_listView];
+        self.dataSource = dataSource;
+        [self initSubViewsWithItems:[self listItemArrayFromDataSource]];
     }
     return self;
+}
+
+- (void)reloadData
+{
+    NSMutableArray *items = [self listItemArrayFromDataSource];
+    self.tabView.listItems = items;
+    self.listView.listItems = items;
+    [self animationBackToBriefMode];
+    //...
+    [self.tabView reloadData];
+    [self.listView reloadData];
+}
+
+- (NSMutableArray *)listItemArrayFromDataSource
+{
+    NSInteger boardNumber = [self.dataSource respondsToSelector:@selector(numberForBoardsInTrelloView:)] ? [self.dataSource numberForBoardsInTrelloView:self] : 0;
+    NSMutableArray *listItems = [NSMutableArray array];
+    
+    for(NSInteger i=0;i<boardNumber;i++)
+    {
+        // Code here can be optimized, but whatever ...
+        SCTrelloBoardLevel level = [self.dataSource respondsToSelector:@selector(levelForRowsInTrelloView:atBoardIndex:)] ? [self.dataSource levelForRowsInTrelloView:self atBoardIndex:i] : SCTrelloBoardLevel1;
+        NSInteger rowNumber = [self.dataSource respondsToSelector:@selector(numberForRowsInTrelloView:atBoardIndex:)] ? [self.dataSource numberForRowsInTrelloView:self atBoardIndex:i] : 0;
+        NSString *title = [self.dataSource respondsToSelector:@selector(titleForBoardsInTrelloView:atBoardIndex:)] ? [self.dataSource titleForBoardsInTrelloView:self atBoardIndex:i] : @"DEFAULT";
+        
+        NSMutableArray *rowItemArray = [NSMutableArray array];
+        if([self.dataSource respondsToSelector:@selector(itemForRowsInTrelloView:atBoardIndex:atRowIndex:)])
+        {
+            for(NSInteger j=0;j<rowNumber;j++)
+            {
+                [rowItemArray addObject:[self.dataSource itemForRowsInTrelloView:self atBoardIndex:i atRowIndex:j]];
+            }
+        }
+        
+        [listItems addObject:[[TrelloListItem alloc]initWithTitle:title level:level rowNumber:rowNumber rowItems:rowItemArray]];
+    }
+    return listItems;
+}
+
+- (void)initSubViewsWithItems:(NSArray *)listItems
+{
+    self.isFoldedMode = NO;
+    
+    self.tabView = [[TrelloListTabView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, 100.0f) withListArray:listItems];
+    _tabView.backgroundColor = Global_trelloBlue;
+    [_tabView selectBoardAtIndex:0];
+    
+    __weak TrelloView *weakSelf = self;
+    _tabView.HeaderDidSwitchCallBack = ^{
+        [weakSelf switchMode];
+    };
+    
+    [self addSubview:_tabView];
+    
+    self.listView = [[TrelloListView alloc]initWithFrame:CGRectMake(30.0f, _tabView.bottom - 30.0f, ScreenWidth - 45.0f, self.height - _tabView.bottom + 30.0f) index:0 listArray:listItems];
+    _listView.delegate = self;
+    _listView.layer.masksToBounds = NO;
+    _listView.clipsToBounds = NO;
+    
+    _listView.HeaderDidFoldedCallBack = ^{
+        if(!weakSelf.isFoldedMode)
+        {
+            // 展开
+            for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
+            {
+                view.titlelabel.frame = CGRectZero;
+            }
+            [UIView animateWithDuration:0.3f animations:^{
+                CGFloat nextX = 70.0f;
+                
+                weakSelf.tabView.contentSize = CGSizeMake(0.0f, 35.0f);
+                weakSelf.tabView.frame = CGRectMake(0.0f, weakSelf.tabView.top, ScreenWidth, 35.0f);
+                for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
+                {
+                    view.frame = CGRectMake(nextX, 0.0f, 30.0f, 0.0f);
+                    view.boardView.frame = CGRectMake(5.0f, 5.0f, 20.0f, 0.0f);
+                    nextX += view.width;
+                }
+                
+                CGRect frame = weakSelf.listView.frame;
+                frame.origin.y = 5.0f;
+                frame.size.height = weakSelf.height - 5.0f;
+                weakSelf.listView.frame = frame;
+                
+            } completion:^(BOOL finished) {
+                weakSelf.isFoldedMode = YES;
+                weakSelf.tabView.isFoldedMode = YES;
+                weakSelf.tabView.isBriefMode = NO;
+                weakSelf.listView.isFoldMode = YES;
+            }];
+        }
+        else
+        {
+            for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
+            {
+                view.titlelabel.frame = CGRectZero;
+            }
+            [UIView animateWithDuration:0.3f animations:^{
+                CGFloat nextX = 70.0f;
+                
+                weakSelf.tabView.contentSize = CGSizeMake(70.0f + weakSelf.tabView.listItems.count * 30.0f, 100.0f);
+                weakSelf.tabView.frame = CGRectMake(0.0f, weakSelf.tabView.top, ScreenWidth, 100.0f);
+                for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
+                {
+                    view.frame = CGRectMake(nextX, 0.0f, 30.0f, 30.0f + view.item.heightLevel * 10.0f + 20.0f);
+                    view.boardView.frame = CGRectMake(5.0f, 5.0f, 20.0f, view.item.heightLevel * 10.0f);
+                    nextX += view.width;
+                }
+                
+                CGRect frame = weakSelf.listView.frame;
+                frame.origin.y = weakSelf.tabView.bottom - 30.0f;
+                frame.size.height = weakSelf.height - weakSelf.tabView.bottom + 30.0f;
+                weakSelf.listView.frame = frame;
+            } completion:^(BOOL finished) {
+                weakSelf.isFoldedMode = NO;
+                weakSelf.tabView.isFoldedMode = NO;
+                weakSelf.tabView.isBriefMode = YES;
+                weakSelf.listView.isFoldMode = NO;
+            }];
+        }
+    };
+    [self addSubview:_listView];
 }
 
 - (void)switchMode
@@ -136,30 +176,35 @@
     }
     else
     {
-        for(TrelloListItemView *view in _tabView.listItemViews)
-        {
-            view.titlelabel.frame = CGRectZero;
-        }
-        [UIView animateWithDuration:0.3f animations:^{
-            CGFloat nextX = 70.0f;
-            
-            self.tabView.contentSize = CGSizeMake(70.0f + self.tabView.listItems.count * 30.0f, 100.0f);
-            self.tabView.frame = CGRectMake(0.0f, self.tabView.top, ScreenWidth, 100.0f);
-            for(TrelloListItemView *view in self.tabView.listItemViews)
-            {
-                view.frame = CGRectMake(nextX, 0.0f, 30.0f, 30.0f + view.item.heightLevel * 10.0f + 20.0f);
-                view.boardView.frame = CGRectMake(5.0f, 5.0f, 20.0f, view.item.heightLevel * 10.0f);
-                nextX += view.width;
-            }
-            
-            self.listView.top = self.tabView.bottom - 30.0f;
-            
-        } completion:^(BOOL finished) {
-            self.listView.isFoldMode = NO;
-            self.isFoldedMode = NO;
-            self.tabView.isBriefMode = YES;
-        }];
+        [self animationBackToBriefMode];
     }
+}
+
+- (void)animationBackToBriefMode
+{
+    for(TrelloListItemView *view in _tabView.listItemViews)
+    {
+        view.titlelabel.frame = CGRectZero;
+    }
+    [UIView animateWithDuration:0.3f animations:^{
+        CGFloat nextX = 70.0f;
+        
+        self.tabView.contentSize = CGSizeMake(70.0f + self.tabView.listItems.count * 30.0f, 100.0f);
+        self.tabView.frame = CGRectMake(0.0f, self.tabView.top, ScreenWidth, 100.0f);
+        for(TrelloListItemView *view in self.tabView.listItemViews)
+        {
+            view.frame = CGRectMake(nextX, 0.0f, 30.0f, 30.0f + view.item.heightLevel * 10.0f + 20.0f);
+            view.boardView.frame = CGRectMake(5.0f, 5.0f, 20.0f, view.item.heightLevel * 10.0f);
+            nextX += view.width;
+        }
+        
+        self.listView.top = self.tabView.bottom - 30.0f;
+        
+    } completion:^(BOOL finished) {
+        self.listView.isFoldMode = NO;
+        self.isFoldedMode = NO;
+        self.tabView.isBriefMode = YES;
+    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
