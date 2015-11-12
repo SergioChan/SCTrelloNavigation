@@ -19,35 +19,85 @@ The design was originated from [Aurélien Salomon](https://dribbble.com/aurelien
 This navigation interactive mode can make you easier to switch among different boards, while disturbing you the least when you are switching.
  
 ## Version
-1.0
+1.1
 
 ## Environment
 iOS 8.0 以上 iPhone 5s/iPhone6/iPhone6 Plus 测试通过
 iOS 8.0 Above iPhone 5s/6/6 Plus Tested
 ## Usage
 
-初始化十分简单，但是整个控件需要接受的数据比较复杂，都是自定义的数据模型。
-
-The initialization is very simple, you need to pass over the whole data source to the view, which all have specific data structure.
+初始化整个控件比较简单:
 
 ```Objective-C
-
-TrelloListCellItem *cell_item_1 = [[TrelloListCellItem alloc] initWithContent:@"Have a pleasant afternoon" image:[UIImage imageNamed:@"testImage3"] type:SCTrelloCellItemRed];
-
-TrelloListItem *item = [[TrelloListItem alloc]initWithTitle:@"BACKLOG" level:3 rowNumber:3 rowItems:t_array];
-
 // 初始化其实只要一句话的
-TrelloView *trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, ScreenHeight) listArray:@[item]];
-```
-具体的初始化可以看demo中的示范，由于初始化的时候需要将整个view的数据源都传入，所以代码比较多。
+self.trelloView = [[TrelloView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, ScreenHeight) dataSource:self];
 
-You can download the demo to see detailed code for initialization.
+[self.view addSubview:_trelloView];
+```
+
+数据源的加载改为了通过协议的方式完成，你需要总共实现以下这么几条协议：
+You should conform to the protocol and implement methods below:
+
+```Objective-C
+/**
+ *  Return how many boards that you are going to display
+ *
+ *  @param trelloView target trelloView
+ *
+ *  @return NSInteger
+ */
+- (NSInteger)numberForBoardsInTrelloView:(TrelloView *)trelloView;
+
+/**
+ *  Return how many rows each board is going to display
+ *
+ *  @param trelloView target trelloView
+ *  @param index      index of the target trelloView
+ *
+ *  @return NSInteger
+ */
+- (NSInteger)numberForRowsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index;
+
+/**
+ *  Return the item that each row in each board is going to display. 
+ *  You can extend the TrelloListCellItem model to whatever you want, just customizing your own cell in table view datasource
+ *  Enjoy yourself :)
+ *
+ *  @param trelloView target trelloView
+ *  @param index      index of the target trelloView
+ *  @param rowIndex   index of the target row
+ *
+ *  @return TrelloListCellItem
+ */
+- (TrelloListCellItem *)itemForRowsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index atRowIndex:(NSInteger)rowIndex;
+
+/**
+ *  Return title of each board
+ *
+ *  @param trelloView target trelloView
+ *  @param index      index of the target trelloView
+ *
+ *  @return NSInteger
+ */
+- (NSString *)titleForBoardsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index;
+
+/**
+ *  Return the level of each board
+ *
+ *  @param trelloView target trelloView
+ *  @param index      index of the target trelloView
+ *
+ *  @return SCTrelloBoardLevel
+ */
+- (SCTrelloBoardLevel)levelForRowsInTrelloView:(TrelloView *)trelloView atBoardIndex:(NSInteger)index;
+```
+
+新版本还提供了一个`reloadData`的方法用来动态刷新数据源。具体的用法可以参考demo和源代码。
 
 ## To Do
 
 * CocoaPods
 * TableView reusable
-* Document
 
 
 
