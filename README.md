@@ -3,6 +3,8 @@ An iOS native implementation of a Trello Animated Navagation. See more at https:
 
 iOS上类似trello的导航动效控件实现。
 
+> *最新的Swift实现已经由[小青同学](https://github.com/DianQK)完成：[SwiftTrelloNaviation](https://github.com/DianQK/TrelloNavigation)*
+
 ## Preview 
 ![image](https://raw.githubusercontent.com/SergioChan/SCTrelloNavigation/master/Image/preview.png)
 
