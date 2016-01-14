@@ -151,7 +151,8 @@
 {
     if(_tabView.isBriefMode)
     {
-        [UIView animateWithDuration:0.3f animations:^{
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            
             CGFloat scale = (ScreenWidth/4.5f)/30.0f;
             CGFloat nextX = 30.0f;
             
@@ -186,7 +187,8 @@
     {
         view.titlelabel.frame = CGRectZero;
     }
-    [UIView animateWithDuration:0.3f animations:^{
+    
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGFloat nextX = 70.0f;
         
         self.tabView.contentSize = CGSizeMake(70.0f + self.tabView.listItems.count * 30.0f, 100.0f);

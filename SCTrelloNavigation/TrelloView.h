@@ -102,8 +102,15 @@ typedef NS_ENUM(NSInteger, SCTrelloBoardLevel) {
 
 @interface TrelloView : UIView <UIScrollViewDelegate>
 
+/**
+ *  List tab view above
+ */
 @property (nonatomic, strong) TrelloListTabView *tabView;
 @property (nonatomic, strong) TrelloListView *listView;
+
+/**
+ *  Whether the tabView is folded or not
+ */
 @property (nonatomic) BOOL isFoldedMode;
 @property (nonatomic, weak) id<TrelloDataSource> dataSource;
 
