@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TrelloListCellItem.h"
-#import "GlobalHeader.h"
+#import "SCTrelloHeader.h"
 
 @interface TrelloListTableViewCell : UITableViewCell
 

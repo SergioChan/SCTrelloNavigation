@@ -22,22 +22,17 @@
         self.selectedIndex = 0;
         self.isBriefMode = YES;
         self.isFoldedMode = NO;
-        self.scrollEnabled = NO;
+        
+        // Why setting no, have no idea what I was thinking back then
+        self.scrollEnabled = YES;
         self.contentSize = CGSizeMake(70.0f + listItems.count * 30.0f, self.height);
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(blankAreaTapped:)];
         [self addGestureRecognizer:tap];
+        
         [self initSubViews];
     }
     return self;
-}
-
-- (void)tap
-{
-    if(self.HeaderDidSwitchCallBack)
-    {
-        self.HeaderDidSwitchCallBack();
-    }
 }
 
 - (void)initSubViews
@@ -46,14 +41,22 @@
     for(TrelloListItem *t_item in self.listItems)
     {
         TrelloListItemView *view = [[TrelloListItemView alloc]initWithItem:t_item];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(listItemViewTapped:)];
+        [view addGestureRecognizer:tap];
+        
         CGRect frame = view.frame;
         frame.origin.x = nextX;
         view.frame = frame;
-        nextX += view.width;
+        
         [self addSubview:view];
         [self.listItemViews addObject:view];
+        
+        nextX += view.width;
     }
 }
+
+#pragma mark - Reload Method
 
 - (void)reloadData
 {
@@ -68,12 +71,18 @@
     for(TrelloListItem *t_item in self.listItems)
     {
         TrelloListItemView *view = [[TrelloListItemView alloc]initWithItem:t_item];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(listItemViewTapped:)];
+        [view addGestureRecognizer:tap];
+        
         CGRect frame = view.frame;
         frame.origin.x = nextX;
         view.frame = frame;
-        nextX += view.width;
+        
         [self addSubview:view];
         [self.listItemViews addObject:view];
+        
+        nextX += view.width;
     }
     [self selectBoardAtIndex:self.selectedIndex];
 }
@@ -102,6 +111,31 @@
             self.selectedIndex = index;
         }
     }];
+}
+
+#pragma mark - Tapped and Touch Method
+
+- (void)blankAreaTapped:(UITapGestureRecognizer *)gesture
+{
+    if(self.HeaderDidSwitchCallBack)
+    {
+        self.HeaderDidSwitchCallBack();
+    }
+}
+
+- (void)listItemViewTapped:(UITapGestureRecognizer *)gesture
+{
+    if ([self.listItemViews containsObject:gesture.view]) {
+        NSInteger index = [self.listItemViews indexOfObject:gesture.view];
+        if (index != self.selectedIndex) {
+            // Only excute when index changing
+            
+            if (self.HeaderDidSelectIndexCallBack) {
+                self.HeaderDidSelectIndexCallBack(index);
+            }
+            [self selectBoardAtIndex:index];
+        }
+    }
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -142,6 +176,7 @@
                 }
                 else
                 {
+                    [super touchesMoved:touches withEvent:event];
                     return;
                 }
             }

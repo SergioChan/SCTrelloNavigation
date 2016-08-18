@@ -24,7 +24,7 @@
         self.showsVerticalScrollIndicator = NO;
         
         UIView *t_view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.width, 30.0f)];
-        t_view.backgroundColor = Global_trelloGray;
+        t_view.backgroundColor = SC_Global_trelloGray;
         
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:t_view.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];

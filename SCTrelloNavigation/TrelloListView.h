@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GlobalHeader.h"
+#import "SCTrelloHeader.h"
 #import "TrelloListItem.h"
 #import "TrelloListTableView.h"
 #import "TrelloListIconView.h"

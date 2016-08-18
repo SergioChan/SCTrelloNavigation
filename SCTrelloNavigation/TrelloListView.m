@@ -28,6 +28,8 @@
         self.bounces = YES;
         self.alwaysBounceVertical = NO;
         self.alwaysBounceHorizontal = NO;
+        self.layer.masksToBounds = NO;
+        self.clipsToBounds = NO;
         
         self.reusableTableViewArray = [NSMutableArray array];
         self.visibleTableViewArray = [NSMutableArray array];
@@ -39,8 +41,10 @@
         for(NSInteger i=0;i<listItems.count;i++)
         {
             TrelloListTableView *t_tableView = [[TrelloListTableView alloc]initWithFrame:CGRectMake(nextX, 0.0f, ScreenWidth - 60.0f, self.height) style:UITableViewStylePlain listItem:[listItems objectAtIndex:i]];
+            
             t_tableView.delegate = self;
             t_tableView.dataSource = self;
+            
             [self addSubview:t_tableView];
             nextX = t_tableView.right + 15.0f;
             
@@ -135,7 +139,7 @@
     if(!t_tableView.trelloListHeaderView)
     {
         UIView *t_view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, t_tableView.width, 60.0f)];
-        t_view.backgroundColor = Global_trelloGray;
+        t_view.backgroundColor = SC_Global_trelloGray;
         
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:t_view.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -147,7 +151,7 @@
         [t_view addSubview:menuIcon];
         
         UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, 20.0f, t_tableView.width - 60.0f, 20.0f)];
-        titleLabel.textColor = Global_trelloLightGray;
+        titleLabel.textColor = SC_Global_trelloLightGray;
         titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
         titleLabel.text = t_tableView.listItem.title;
         [t_view addSubview:titleLabel];

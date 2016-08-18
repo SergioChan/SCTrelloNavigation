@@ -4,7 +4,7 @@
  BSD License, Use at your own risk
  */
 
-#import "UIViewExt.h"
+#import "UIView+ViewFrameGeometry.h"
 
 CGPoint CGRectGetCenter(CGRect rect)
 {
@@ -12,6 +12,17 @@ CGPoint CGRectGetCenter(CGRect rect)
     pt.x = CGRectGetMidX(rect);
     pt.y = CGRectGetMidY(rect);
     return pt;
+}
+
+double radians(float degrees) {
+    return ( degrees * 3.14159265 ) / 180.0;
+}
+
+CATransform3D getTransForm3DWithAngle(CGFloat angle)
+{
+    CATransform3D  transform = CATransform3DIdentity;
+    transform  = CATransform3DRotate(transform, angle, 0, 0, 1);
+    return transform;
 }
 
 CGRect CGRectMoveToCenter(CGRect rect, CGPoint center)

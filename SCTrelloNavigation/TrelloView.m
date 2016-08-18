@@ -64,26 +64,25 @@
 
 - (void)initSubViewsWithItems:(NSArray *)listItems
 {
-    self.isFoldedMode = NO;
-    
     self.tabView = [[TrelloListTabView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, ScreenWidth, 100.0f) withListArray:listItems];
-    _tabView.backgroundColor = Global_trelloBlue;
+    _tabView.backgroundColor = SC_Global_trelloBlue;
     [_tabView selectBoardAtIndex:0];
     
     __weak TrelloView *weakSelf = self;
     _tabView.HeaderDidSwitchCallBack = ^{
         [weakSelf switchMode];
     };
+    _tabView.HeaderDidSelectIndexCallBack = ^(NSInteger index){
+        [weakSelf.listView scrollRectToVisible:CGRectMake(index * weakSelf.listView.width, 0.0f, weakSelf.listView.width, ScreenHeight) animated:YES];
+    };
     
     [self addSubview:_tabView];
     
     self.listView = [[TrelloListView alloc]initWithFrame:CGRectMake(30.0f, _tabView.bottom - 30.0f, ScreenWidth - 45.0f, self.height - _tabView.bottom + 30.0f) index:0 listArray:listItems];
     _listView.delegate = self;
-    _listView.layer.masksToBounds = NO;
-    _listView.clipsToBounds = NO;
     
     _listView.HeaderDidFoldedCallBack = ^{
-        if(!weakSelf.isFoldedMode)
+        if(!weakSelf.tabView.isFoldedMode)
         {
             // 展开
             for(TrelloListItemView *view in weakSelf.tabView.listItemViews)
@@ -108,7 +107,6 @@
                 weakSelf.listView.frame = frame;
                 
             } completion:^(BOOL finished) {
-                weakSelf.isFoldedMode = YES;
                 weakSelf.tabView.isFoldedMode = YES;
                 weakSelf.tabView.isBriefMode = NO;
                 weakSelf.listView.isFoldMode = YES;
@@ -137,7 +135,6 @@
                 frame.size.height = weakSelf.height - weakSelf.tabView.bottom + 30.0f;
                 weakSelf.listView.frame = frame;
             } completion:^(BOOL finished) {
-                weakSelf.isFoldedMode = NO;
                 weakSelf.tabView.isFoldedMode = NO;
                 weakSelf.tabView.isBriefMode = YES;
                 weakSelf.listView.isFoldMode = NO;
@@ -170,8 +167,8 @@
 
         } completion:^(BOOL finished) {
             self.listView.isFoldMode = NO;
-            self.isFoldedMode = NO;
             self.tabView.isBriefMode = NO;
+            [self.tabView scrollRectToVisible:[(TrelloListItemView *)[self.tabView.listItemViews objectAtIndex:self.tabView.selectedIndex] frame] animated:YES];
         }];
         // 缩略图模式，变大
     }
@@ -204,7 +201,6 @@
         
     } completion:^(BOOL finished) {
         self.listView.isFoldMode = NO;
-        self.isFoldedMode = NO;
         self.tabView.isBriefMode = YES;
     }];
 }

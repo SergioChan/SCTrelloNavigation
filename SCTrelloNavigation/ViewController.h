@@ -7,13 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GlobalHeader.h"
-#import "UINavigationBar+Awesome.h"
-#import "TrelloListTabView.h"
-#import "TrelloListView.h"
-#import "TrelloView.h"
-#import "UIImage+ImageWithColor.h"
-#import "TrelloListCellItem.h"
+#import "SCTrelloNavigation.h"
 
 @interface ViewController : UIViewController <UIScrollViewDelegate,TrelloDataSource>
 

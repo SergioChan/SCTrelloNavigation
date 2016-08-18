@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TrelloListItem.h"
-#import "GlobalHeader.h"
+#import "SCTrelloHeader.h"
 #import "TrelloListItemView.h"
 
 @interface TrelloListTabView : UIScrollView
@@ -28,8 +28,10 @@
 @property (nonatomic) BOOL isFoldedMode;
 
 @property (copy) void (^HeaderDidSwitchCallBack)();
+@property (copy) void (^HeaderDidSelectIndexCallBack)(NSInteger destinationIndex);
 
 - (id)initWithFrame:(CGRect)frame withListArray:(NSArray *)listItems;
 - (void)selectBoardAtIndex:(NSInteger)index;
 - (void)reloadData;
+
 @end

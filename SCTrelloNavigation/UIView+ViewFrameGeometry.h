@@ -6,8 +6,13 @@
 
 #import <UIKit/UIKit.h>
 
+#define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
+#define ScreenHeight                        [[UIScreen mainScreen] bounds].size.height
+
 CGPoint CGRectGetCenter(CGRect rect);
 CGRect  CGRectMoveToCenter(CGRect rect, CGPoint center);
+double radians(float degrees);
+CATransform3D getTransForm3DWithAngle(CGFloat angle);
 
 @interface UIView (ViewFrameGeometry)
 @property CGPoint origin;

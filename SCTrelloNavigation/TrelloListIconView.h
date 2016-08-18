@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GlobalHeader.h"
+#import "SCTrelloHeader.h"
 
 @interface TrelloListIconView : UIView
 

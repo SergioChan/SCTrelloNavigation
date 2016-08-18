@@ -16,7 +16,7 @@
     if(self)
     {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = Global_trelloGray;
+        self.backgroundColor = SC_Global_trelloGray;
         [self initSubViews];
     }
     return self;
@@ -36,7 +36,7 @@
     [self.bgView addSubview:_detailImageView];
     
     self.contentLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-    _contentLabel.textColor = Global_trelloLightGray;
+    _contentLabel.textColor = SC_Global_trelloLightGray;
     _contentLabel.font = [UIFont systemFontOfSize:15.0f];
     [self.bgView addSubview:_contentLabel];
     

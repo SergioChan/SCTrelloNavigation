@@ -12,7 +12,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = Global_trelloDeepBlue;
+    self.view.backgroundColor = SC_Global_trelloDeepBlue;
 
     UIBarButtonItem *search = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
     search.tintColor = [UIColor whiteColor];
@@ -37,7 +37,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setTranslucent:NO];
-    self.navigationController.navigationBar.barTintColor = Global_trelloBlue;
+    self.navigationController.navigationBar.barTintColor = SC_Global_trelloBlue;
     for (UIView *view in [[[self.navigationController.navigationBar subviews] objectAtIndex:0] subviews]) {
         if ([view isKindOfClass:[UIImageView class]]) {
             view.hidden = YES;

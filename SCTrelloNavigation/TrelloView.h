@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GlobalHeader.h"
+#import "SCTrelloHeader.h"
 #import "TrelloListTabView.h"
 #import "TrelloListView.h"
 #import "TrelloListTableView.h"
@@ -109,9 +109,10 @@ typedef NS_ENUM(NSInteger, SCTrelloBoardLevel) {
 @property (nonatomic, strong) TrelloListView *listView;
 
 /**
- *  Whether the tabView is folded or not
+ *  [Deprecated] Use tabView.isFoldedMode instead.
  */
-@property (nonatomic) BOOL isFoldedMode;
+@property (nonatomic) BOOL isFoldedMode SC_DEPRECATED;
+
 @property (nonatomic, weak) id<TrelloDataSource> dataSource;
 
 /**
@@ -130,4 +131,5 @@ typedef NS_ENUM(NSInteger, SCTrelloBoardLevel) {
  *  Dynamic refresh data source using this method
  */
 - (void)reloadData;
+
 @end
